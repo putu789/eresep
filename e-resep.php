@@ -452,15 +452,11 @@ $(document).ready(function(){
    var idol = $(this).attr("idol");
    var dok = $(this).attr("dok");
    var tgl = $(this).attr("tgl");
-   
-
-   // AJAX request
    $.ajax({
     url: 'includes/riwayat-obat.php',
     type: 'post',
     data: {id:id,idol:idol,dok:dok,tgl:tgl},
     success: function(response){ 
-      // Add response in Modal body
       $('.modal-body').html(response);
       $('#empModal').modal('show'); 
     }
