@@ -67,56 +67,52 @@ if (!isset($_COOKIE['username']) && !isset($_COOKIE['password'])) {
 		$aturan = $_POST['aturan'];
  		$count = count($obat);
 		if(!empty($obat)  && !empty($jumlah)){
-			$onhand = query("SELECT no_resep FROM resep_obat WHERE no_rawat = '{$_POST['no_rwt']}'");
-                    			$dtonhand = fetch_array($onhand);
-                    			$get_number = fetch_array(query("SELECT max(no_resep) FROM resep_obat"));
-                    			$lastNumber = substr($get_number[0], 0, 10);
-                    			$next_no_resep = sprintf('%010s', ($lastNumber + 1)); 
-
-								
-                    			if ($dtonhand['0'] > 1) {
-								for( $i=0; $i < $count; $i++ ){
-                        		$insert = query("INSERT INTO resep_dokter (no_resep,kode_brng,jml,aturan_pakai) VALUES ('{$dtonhand['0']}', '{$obat[$i]}', '{$jumlah[$i]}', '{$aturan[$i]}')");
-									}
-								} else {
-                        			$insert = query("INSERT INTO resep_obat VALUES ('{$next_no_resep}', '{$_POST['tgl']}', '{$_POST['jam']}', '{$_POST['no_rwt']}', '{$_POST['dokter']}', '{$_POST['tgl']}', '{$_POST['jam']}')");
-									for( $i=0; $i < $count; $i++ ){
-                        			$insert2 = query("INSERT INTO resep_dokter (no_resep,kode_brng,jml,aturan_pakai) VALUES ('{$next_no_resep}', '{$obat[$i]}', '{$jumlah[$i]}', '{$aturan[$i]}')");
-                    					}
-								}
+		$onhand = query("SELECT no_resep FROM resep_obat WHERE no_rawat = '{$_POST['no_rwt']}'");
+                $dtonhand = fetch_array($onhand);
+                $get_number = fetch_array(query("SELECT max(no_resep) FROM resep_obat"));
+                $lastNumber = substr($get_number[0], 0, 10);
+                $next_no_resep = sprintf('%010s', ($lastNumber + 1)); 
+		if ($dtonhand['0'] > 1) {
+			for( $i=0; $i < $count; $i++ ){
+                        	$insert = query("INSERT INTO resep_dokter (no_resep,kode_brng,jml,aturan_pakai) VALUES ('{$dtonhand['0']}', '{$obat[$i]}', '{$jumlah[$i]}', '{$aturan[$i]}')");
+			}
+		} else {
+                     $insert = query("INSERT INTO resep_obat VALUES ('{$next_no_resep}', '{$_POST['tgl']}', '{$_POST['jam']}', '{$_POST['no_rwt']}', '{$_POST['dokter']}', '{$_POST['tgl']}', '{$_POST['jam']}')");
+			for( $i=0; $i < $count; $i++ ){
+                        	$insert2 = query("INSERT INTO resep_dokter (no_resep,kode_brng,jml,aturan_pakai) VALUES ('{$next_no_resep}', '{$obat[$i]}', '{$jumlah[$i]}', '{$aturan[$i]}')");
+                    	}
+		}
                 
             }
         } else {
             $pesan = "Tidak dapat menyimpan, data belum lengkap!";
-		}
+	}
 
 		
-		?>
+?>
 <?php
     if (isset($_POST['btn_simpan'])){
         $kode_obat = $_POST['kode_obat'];
         $jumlah = $_POST['jumlah'];
-		$aturan = $_POST['aturan'];
-								$chk="";
-								foreach($aturan as $chk1)
-								{
-								$chk.= $chk1." ";
-								} 
+	$aturan = $_POST['aturan'];
+	$chk="";
+	foreach($aturan as $chk1)
+	{
+	$chk.= $chk1." ";
+	} 
         
-        if(!empty($kode_obat)  && !empty($jumlah)){
-            $onhand = query("SELECT no_resep FROM resep_obat WHERE no_rawat = '{$_POST['no_rawat']}'");
-                    			$dtonhand = fetch_array($onhand);
-
-                    			$get_number = fetch_array(query("SELECT max(no_resep) FROM resep_obat"));
-                    			$lastNumber = substr($get_number[0], 0, 10);
-                    			$next_no_resep = sprintf('%010s', ($lastNumber + 1)); 
-
-                    			if ($dtonhand['0'] > 1) {
-                        			$insert = query("INSERT INTO resep_dokter VALUES ('{$dtonhand['0']}', '{$_POST['kode_obat']}', '{$_POST['jumlah']}', '{$chk}')");
-								} else {
-                        			$insert = query("INSERT INTO resep_obat VALUES ('{$next_no_resep}', '{$_POST['tgl']}', '{$_POST['jam']}', '{$_POST['no_rawat']}', '{$_POST['dokter']}', '{$_POST['tgl']}', '{$_POST['jam']}')");
-                        			$insert2 = query("INSERT INTO resep_dokter VALUES ('{$next_no_resep}', '{$_POST['kode_obat']}', '{$_POST['jumlah']}', '{$chk}')");
-                    			}
+       if(!empty($kode_obat)  && !empty($jumlah)){
+	       $onhand = query("SELECT no_resep FROM resep_obat WHERE no_rawat = '{$_POST['no_rawat']}'");
+	       $dtonhand = fetch_array($onhand);
+	       $get_number = fetch_array(query("SELECT max(no_resep) FROM resep_obat"));
+               $lastNumber = substr($get_number[0], 0, 10);
+               $next_no_resep = sprintf('%010s', ($lastNumber + 1)); 
+		if ($dtonhand['0'] > 1) {
+                        $insert = query("INSERT INTO resep_dokter VALUES ('{$dtonhand['0']}', '{$_POST['kode_obat']}', '{$_POST['jumlah']}', '{$chk}')");
+		} else {
+                        $insert = query("INSERT INTO resep_obat VALUES ('{$next_no_resep}', '{$_POST['tgl']}', '{$_POST['jam']}', '{$_POST['no_rawat']}', '{$_POST['dokter']}', '{$_POST['tgl']}', '{$_POST['jam']}')");
+                        $insert2 = query("INSERT INTO resep_dokter VALUES ('{$next_no_resep}', '{$_POST['kode_obat']}', '{$_POST['jumlah']}', '{$chk}')");
+                }
                 
             }
         } else {
@@ -150,10 +146,9 @@ if (!isset($_COOKIE['username']) && !isset($_COOKIE['password'])) {
                             $query_vital = query("SELECT a.suhu_tubuh, a.tensi, a.nadi, a.respirasi, a.tinggi, a.berat, 													a.gcs, a.keluhan, a.pemeriksaan, a.alergi, a.imun_ke, a.rtl, a.diagnosa_dr, a.tindakan_dr
                                                   FROM pemeriksaan_ralan a, reg_periksa b, dokter c
                                                   WHERE a.no_rawat = '{$no_rawat}' and a.no_rawat = b.no_rawat
-														and c.kd_dokter = '{$_SESSION['username']}'");
-														while ($data_sip = fetch_array($query_vital))
-														{
-														?>	
+						and c.kd_dokter = '{$_SESSION['username']}'");
+				while ($data_sip = fetch_array($query_vital)){
+			?>	
                            <p style="font-size:16px; color:#F00;"><b>PERINGATAN!!!!!!!!<br>Pasien ini Alergi Terhadap: <u><?php echo $data_sip['alergi'] ; ?></u></b></p>
                        
 <?php }?>
